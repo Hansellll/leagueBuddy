@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"io"
 	"log"
@@ -9,6 +10,17 @@ import (
 )
 
 func main() {
+	//User input
+	in := bufio.NewReader(os.Stdin)
+
+	var word string
+	fmt.Print("Please enter your username: \n")
+	if _, err := fmt.Fscan(in, &word); err != nil {
+		fmt.Println("scan error:", err)
+		return
+	}
+	fmt.Println("You typed: ", word)
+
 	if len(os.Args) < 2 {
 		log.Fatal("usage: go run main.go <full-url>")
 	}
