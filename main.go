@@ -16,6 +16,10 @@ import (
 	"net/url"
 	"os"
 	"strings"
+	//"github.com/KnutZuidema/golio"
+	//"github.com/KnutZuidema/golio/api"
+	//"github.com/KnutZuidema/golio/riot/lol"
+	//"github.com/sirupsen/logrus"
 )
 
 // JSON Struct for handling ACCOUNT-V1 repsonse
@@ -94,6 +98,7 @@ func main() {
 		fmt.Println()
 	}
 }
+
 func getPuuid(username, tagline, apiKey string) (*Account, error) {
 	baseurl := "https://americas.api.riotgames.com"
 	endpoint := fmt.Sprintf(
