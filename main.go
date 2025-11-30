@@ -26,17 +26,17 @@ type Account struct {
 }
 
 func main() {
+
 	// Create bufio reader taking Stdin as input
 	userin := bufio.NewReader(os.Stdin)
-
 	fmt.Print("Enter your username: \n")
 	username, err := userin.ReadString('\n')
 	if err != nil {
 		log.Fatal("error reading username: ", err)
 	}
+
 	// Format for url
 	username = strings.TrimSpace(username)
-
 	// Get tagline
 	fmt.Print("Enter tagline: \n")
 	tagline, err := userin.ReadString('\n')
@@ -80,13 +80,21 @@ func main() {
 	for _, m := range matches {
 		fmt.Println(m)
 	}
-}
 
-func getPuuid(
-	username,
-	tagline,
-	apiKey string,
-) (*Account, error) {
+	//Use match-v5 api to extract data on previous 5 matches
+	fmt.Println("Lets print some info on those match's! ")
+	for _, m := range matches {
+		fullurl := fmt.Sprintf(
+			"https://americas.api.riotgames.com/lol/match/v5/matches/%s",
+			url.PathEscape(m))
+		fmt.Println("Match: ", m)
+		if err := api(fullurl, apiKey); err != nil {
+			log.Println("error fetching match", m, ":", err)
+		}
+		fmt.Println()
+	}
+}
+func getPuuid(username, tagline, apiKey string) (*Account, error) {
 	baseurl := "https://americas.api.riotgames.com"
 	endpoint := fmt.Sprintf(
 		"/riot/account/v1/accounts/by-riot-id/%s/%s",
@@ -107,6 +115,7 @@ func getPuuid(
 	if err != nil {
 		return nil, err
 	}
+
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
